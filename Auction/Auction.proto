@@ -1,0 +1,109 @@
+syntax = "proto3";
+
+package Auction;
+
+option go_package = "https://github.com/linedejgaard/DISYS_MINIPROJECT3;Auction";
+
+service AuctionService{
+  rpc Election (ElectionRequest) returns (ElectionReply) {}
+  rpc LeaderDeclaration (LeaderDeclarationRequest) returns (LeaderDeclarationReply) {}
+  rpc Join(JoinRequest) returns (JoinReply) {}
+  rpc Leave(LeaveRequest) returns (LeaveReply) {}
+  rpc UpdatePorts(UpdatePortsRequest) returns (UpdatePortsReply) {}
+  rpc UpdateActionStatus(UpdateAuctionStatusRequest) returns (UpdateActionStatusReply) {}
+
+  rpc Bid(BidRequest) returns (BidReply) {}
+  rpc PublishResult(PublishResultRequest) returns (PublishResultReply) {}
+  rpc GetState(GetStateRequest) returns (GetStateReply) {}
+  rpc MakeNewAuction(MakeNewAuctionRequest) returns (MakeNewAuctionReply) {}
+}
+
+message UpdateAuctionStatusRequest {
+    int32 Bid = 1;
+    string Bidder = 2;
+    bool isAuction = 3;
+}
+
+message UpdateActionStatusReply {
+    string reply = 1;
+}
+
+message MakeNewAuctionRequest {
+    int32 startAmount = 1;
+    string port = 2;
+}
+
+message MakeNewAuctionReply {
+    string reply = 1;
+}
+
+message ElectionReply {
+    string reply = 1;
+}
+
+message ElectionRequest {
+    string message = 1;
+}
+
+message LeaderDeclarationReply {
+    string reply = 1;
+}
+
+message LeaderDeclarationRequest {
+    string port = 1;
+}
+
+message JoinReply {
+    string ports = 1;
+    string reply = 2;
+}
+
+message JoinRequest {
+    string port = 1;
+}
+
+message LeaveReply {
+    string reply = 1;
+}
+
+message LeaveRequest {
+    string port = 1;
+}
+
+message UpdatePortsRequest {
+    string ports = 1;
+}
+
+message UpdatePortsReply {
+    string reply = 1;
+}
+
+message BidReply {
+    bool succeeded = 1;
+    string reply = 2;
+}
+
+message BidRequest {
+    int32 amount = 1;
+    string bidder = 2;
+}
+
+message PublishResultRequest { //leader
+    int32 highestbid = 1;
+    string bidder = 3;
+}
+
+message PublishResultReply{ //other nodes
+    string reply = 1;
+}
+
+message GetStateRequest {
+    string port = 1;
+}
+
+message GetStateReply {
+    int32 state = 1;
+    string reply = 2;
+}
+
+
