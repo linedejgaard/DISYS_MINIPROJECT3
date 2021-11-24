@@ -156,7 +156,8 @@ func (n *Node) Join(_ context.Context, in *Auction.JoinRequest) (*Auction.JoinRe
 }
 
 func (n *Node) sendUpdatePortsRequest(portsString string) { //called on leader
-	fmt.Println(portsString)
+	fmt.Printf("---> SEND UPDATE PORTS REQUEST PORTSTRING:%v\n", portsString)
+
 	for _, p := range stringToSlice(portsString) {
 
 		// Creat a virtual RPC Client Connection on port  9080 WithInsecure (because  of http)
@@ -222,6 +223,7 @@ func (n *Node) UpdatePorts(_ context.Context, in *Auction.UpdatePortsRequest) (*
 
 //GET STATE
 func (n *Node) sendGetStateRequest() { //to leader
+	fmt.Println("SEND GET STATE REQUEST")
 	// Creat a virtual RPC Client Connection on leaderPort
 	var conn *grpc.ClientConn
 	portString := ":" + leaderPort
@@ -260,7 +262,7 @@ func (n *Node) sendGetStateRequest() { //to leader
 }
 
 func (n *Node) GetState(context.Context, *Auction.GetStateRequest) (*Auction.GetStateReply, error) {
-
+	fmt.Println("GET STATE")
 	return &Auction.GetStateReply{
 		State: highestBid,
 		Reply: "Get State succeded",
@@ -269,6 +271,7 @@ func (n *Node) GetState(context.Context, *Auction.GetStateRequest) (*Auction.Get
 
 //BID
 func (n *Node) sendBidRequest(input string) { //to leader
+	fmt.Println("SEND BID REQUEST")
 	// Creat a virtual RPC Client Connection on leaderPort
 	var conn *grpc.ClientConn
 	portString := ":" + leaderPort
@@ -311,6 +314,7 @@ func (n *Node) sendBidRequest(input string) { //to leader
 }
 
 func (n *Node) Bid(_ context.Context, in *Auction.BidRequest) (*Auction.BidReply, error) {
+	fmt.Println("BID")
 	succeeded := in.Amount > highestBid
 	reply := ""
 
@@ -331,6 +335,7 @@ func (n *Node) Bid(_ context.Context, in *Auction.BidRequest) (*Auction.BidReply
 
 //LEAVE
 func (n *Node) sendLeaveRequest() { //to leader
+	fmt.Println("SEND LEAVE REQUEST")
 	// Creat a virtual RPC Client Connection on leaderPort
 	var conn *grpc.ClientConn
 	portString := ":" + leaderPort
@@ -362,7 +367,7 @@ func (n *Node) sendLeaveRequest() { //to leader
 }
 
 func (n *Node) Leave(_ context.Context, in *Auction.LeaveRequest) (*Auction.LeaveReply, error) {
-
+	fmt.Println("LEAVE")
 	if contains(ports, port) {
 
 		ports = removeByPort(ports, in.Port)
@@ -381,6 +386,7 @@ func (n *Node) Leave(_ context.Context, in *Auction.LeaveRequest) (*Auction.Leav
 }
 
 func (n *Node) sendPublishResultRequest() { //from leader
+	fmt.Println("SEND PUBLISH RESULT REQUEST")
 	for _, p := range ports {
 
 		// Creat a virtual RPC Client Connection on port  9080 WithInsecure (because  of http)
@@ -416,7 +422,7 @@ func (n *Node) sendPublishResultRequest() { //from leader
 }
 
 func (n *Node) PublishResult(context.Context, *Auction.PublishResultRequest) (*Auction.PublishResultReply, error) {
-
+	fmt.Println("PUBLISH RESULT")
 	fmt.Printf("Auction finished!\nWinner: %v\nFinal price:%v\n", highestBidder, highestBid)
 
 	isAuction = false
@@ -429,6 +435,7 @@ func (n *Node) PublishResult(context.Context, *Auction.PublishResultRequest) (*A
 }
 
 func (n *Node) sendMakeNewAuctionRequest(input string) { //to leader
+	fmt.Println("SEND MAKE NEW AUCTION REQUEST")
 	// Creat a virtual RPC Client Connection on leaderPort
 	var conn *grpc.ClientConn
 	portString := ":" + leaderPort
@@ -482,28 +489,21 @@ func (n *Node) GetBiddingAmountFromUser(input string) int {
 }
 
 func (n *Node) MakeNewAuction(_ context.Context, in *Auction.MakeNewAuctionRequest) (*Auction.MakeNewAuctionReply, error) {
-	fmt.Println("HER 1 <---")
+	fmt.Println("MAKE NEW AUCTION")
 	reply := ""
 
 	if !isAuction {
-		fmt.Println("HER NOT 1 <---")
 		reply = "Succeeded"
 		isAuction = true
 		highestBid = in.StartAmount
 		highestBidder = in.Port
-		fmt.Println("HER NOT 2 <---")
 		go n.setTimer()
-		fmt.Println("HER NOT 3 <---")
 
 	} else {
-		fmt.Println("HER ELSE 1 <---")
 		reply = "There is already an auction, please wait until it is finished"
 	}
 
-	fmt.Println("HER 2 <---")
-
 	n.sendUpdateAuctionStatusRequest()
-	fmt.Println("HER 3 <---")
 
 	return &Auction.MakeNewAuctionReply{
 		Reply: reply,
@@ -512,6 +512,7 @@ func (n *Node) MakeNewAuction(_ context.Context, in *Auction.MakeNewAuctionReque
 
 //ELECTION!!
 func (n *Node) startElection() {
+	fmt.Println("START ELECTION")
 	ports = removeByPort(ports, leaderPort)
 	n.sendUpdatePortsRequest(sliceToString(ports))
 	leaderPort = ""
@@ -547,6 +548,7 @@ func (n *Node) startElection() {
 }
 
 func sendElectionRequest(c Auction.AuctionServiceClient) bool {
+	fmt.Println("SEND ELECTION REQUEST")
 	message := Auction.ElectionRequest{
 		Message: "Election",
 	}
@@ -565,6 +567,7 @@ func sendElectionRequest(c Auction.AuctionServiceClient) bool {
 }
 
 func (n *Node) Election(context.Context, *Auction.ElectionRequest) (*Auction.ElectionReply, error) {
+	fmt.Println("ELECTION")
 	n.startElection()
 	return &Auction.ElectionReply{
 		Reply: "OK",
@@ -572,6 +575,7 @@ func (n *Node) Election(context.Context, *Auction.ElectionRequest) (*Auction.Ele
 }
 
 func (n *Node) sendLeaderRequest() {
+	fmt.Println("SEND LEADER REQUEST")
 	for _, p := range ports {
 
 		// Creat a virtual RPC Client Connection on port  9080 WithInsecure (because  of http)
@@ -610,6 +614,7 @@ func (n *Node) SendLeaderRequestReceiveReply(conn *grpc.ClientConn) {
 }
 
 func (n *Node) LeaderDeclaration(_ context.Context, in *Auction.LeaderDeclarationRequest) (*Auction.LeaderDeclarationReply, error) {
+	fmt.Println("LEADER DECLARATION")
 	leaderPort = in.Port
 
 	fmt.Printf("New leader: %v\n", port)
@@ -620,21 +625,27 @@ func (n *Node) LeaderDeclaration(_ context.Context, in *Auction.LeaderDeclaratio
 }
 
 func (n *Node) sendUpdateAuctionStatusRequest() {
+	canConnect := true
+	fmt.Printf("------------> SEND UPDATE AUCTION STATUS REQUEST, PORT: %v, PORTS: %v\n", port, ports)
 	for _, p := range ports {
+		if canConnect {
 
-		// Creat a virtual RPC Client Connection on port  9080 WithInsecure (because  of http)
-		var conn *grpc.ClientConn
-		portString := ":" + p
-		conn, err := grpc.Dial(portString, grpc.WithInsecure())
-		if err != nil {
-			ports = removeByPort(ports, p)
-			n.sendUpdatePortsRequest(sliceToString(ports))
-			log.Fatalf("Could not connect: %s", err)
+			// Creat a virtual RPC Client Connection on port  9080 WithInsecure (because  of http)
+			var conn *grpc.ClientConn
+			portString := ":" + p
+			conn, err := grpc.Dial(portString, grpc.WithInsecure())
+			if err != nil {
+				canConnect = false
+				ports = removeByPort(ports, p)
+				n.sendUpdatePortsRequest(sliceToString(ports))
+				log.Printf("Could not connect: %s\n", err)
+			}
+
+			response := n.SendUpdateAuctionStatusRequestReceiveReply(conn, p)
+
+			log.Printf("update auction request response: %s\n", response.Reply)
 		}
 
-		response := n.SendUpdateAuctionStatusRequestReceiveReply(conn, p)
-
-		log.Printf("update auction request response: %s\n", response.Reply)
 	}
 }
 
@@ -651,19 +662,22 @@ func (n *Node) SendUpdateAuctionStatusRequestReceiveReply(conn *grpc.ClientConn,
 		IsAuction: isAuction,
 	}
 
-	response, err := c.UpdateActionStatus(context.Background(), &message)
+	response, err := c.UpdateActionStatus(context.Background(), &message) //THIS IS THE ERROR --> RESPONSE MÅ VÆRE EN FEJL
 	if err != nil {
 		ports = removeByPort(ports, p)
 		n.sendUpdatePortsRequest(sliceToString(ports))
-		log.Printf("Error when calling update auction ports request: %s", err)
+		log.Printf("Error when calling update auction ports request: %s\n", err)
 	}
 	return response
 }
 
 func (n *Node) UpdateActionStatus(_ context.Context, in *Auction.UpdateAuctionStatusRequest) (*Auction.UpdateActionStatusReply, error) {
+	fmt.Println("UPDATE AUCTION STATUS")
+	fmt.Println("HER 1 <----")
 	highestBid = in.Bid
 	highestBidder = in.Bidder
 	isAuction = in.IsAuction
+	fmt.Println("HER 2 <----")
 
 	return &Auction.UpdateActionStatusReply{
 		Reply: "OK",
