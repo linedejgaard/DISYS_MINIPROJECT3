@@ -116,7 +116,10 @@ func (n *Node) sendJoinRequest() {
 
 	} else {
 
-		c := n.GetAuctionService(conn)
+		// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+		defer conn.Close()
+		//  Create new Client from generated gRPC code from proto
+		c := Auction.NewAuctionServiceClient(conn)
 
 		// Send leave request
 		message := Auction.JoinRequest{
@@ -166,7 +169,10 @@ func (n *Node) sendUpdatePortsRequest(portsString string) { //called on leader
 			log.Fatalf("Could not connect: %s", err)
 		} else {
 
-			c := n.GetAuctionService(conn)
+			// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+			defer conn.Close()
+			//  Create new Client from generated gRPC code from proto
+			c := Auction.NewAuctionServiceClient(conn)
 
 			// Send leader request
 			message := Auction.UpdatePortsRequest{
@@ -227,7 +233,10 @@ func (n *Node) sendGetStateRequest() { //to leader
 		log.Fatalf("Could not connect: %s", err)
 	} else {
 
-		c := n.GetAuctionService(conn)
+		// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+		defer conn.Close()
+		//  Create new Client from generated gRPC code from proto
+		c := Auction.NewAuctionServiceClient(conn)
 		// Send get state request
 		message := Auction.GetStateRequest{
 			Port: port,
@@ -270,7 +279,10 @@ func (n *Node) sendBidRequest(input string) { //to leader
 		log.Fatalf("Could not connect: %s", err)
 	} else {
 
-		c := n.GetAuctionService(conn)
+		// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+		defer conn.Close()
+		//  Create new Client from generated gRPC code from proto
+		c := Auction.NewAuctionServiceClient(conn)
 
 		amount, err := strconv.Atoi(input)
 		if err != nil {
@@ -329,7 +341,10 @@ func (n *Node) sendLeaveRequest() { //to leader
 		log.Fatalf("Could not connect: %s", err)
 	}
 
-	c := n.GetAuctionService(conn)
+	// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+	defer conn.Close()
+	//  Create new Client from generated gRPC code from proto
+	c := Auction.NewAuctionServiceClient(conn)
 
 	// Send leave request
 	message := Auction.LeaveRequest{
@@ -378,7 +393,10 @@ func (n *Node) sendPublishResultRequest() { //from leader
 			log.Fatalf("Could not connect: %s", err)
 		}
 
-		c := n.GetAuctionService(conn)
+		// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+		defer conn.Close()
+		//  Create new Client from generated gRPC code from proto
+		c := Auction.NewAuctionServiceClient(conn)
 
 		// Send leader request
 		message := Auction.PublishResultRequest{
@@ -430,7 +448,10 @@ func (n *Node) sendMakeNewAuctionRequest(input string) { //to leader
 }
 
 func (n *Node) SendMakeNewAuctionRequestReceiveReply(conn *grpc.ClientConn, amount int) *Auction.MakeNewAuctionReply {
-	c := n.GetAuctionService(conn)
+	// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+	defer conn.Close()
+	//  Create new Client from generated gRPC code from proto
+	c := Auction.NewAuctionServiceClient(conn)
 
 	// Send make new auction request
 	message := Auction.MakeNewAuctionRequest{
@@ -509,7 +530,10 @@ func (n *Node) startElection() {
 				log.Fatalf("Could not connect: %s", err)
 			}
 
-			c := n.GetAuctionService(conn)
+			// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+			defer conn.Close()
+			//  Create new Client from generated gRPC code from proto
+			c := Auction.NewAuctionServiceClient(conn)
 
 			// Send election request
 			if sendElectionRequest(c) {
@@ -568,7 +592,10 @@ func (n *Node) sendLeaderRequest() {
 }
 
 func (n *Node) SendLeaderRequestReceiveReply(conn *grpc.ClientConn) {
-	c := n.GetAuctionService(conn)
+	// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+	defer conn.Close()
+	//  Create new Client from generated gRPC code from proto
+	c := Auction.NewAuctionServiceClient(conn)
 
 	// Send leader request
 	message := Auction.LeaderDeclarationRequest{
@@ -612,7 +639,10 @@ func (n *Node) sendUpdateAuctionStatusRequest() {
 }
 
 func (n *Node) SendUpdateAuctionStatusRequestReceiveReply(conn *grpc.ClientConn, p string) *Auction.UpdateActionStatusReply {
-	c := n.GetAuctionService(conn)
+	// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+	defer conn.Close()
+	//  Create new Client from generated gRPC code from proto
+	c := Auction.NewAuctionServiceClient(conn)
 
 	// Send leader request
 	message := Auction.UpdateAuctionStatusRequest{
@@ -638,14 +668,6 @@ func (n *Node) UpdateActionStatus(_ context.Context, in *Auction.UpdateAuctionSt
 	return &Auction.UpdateActionStatusReply{
 		Reply: "OK",
 	}, nil
-}
-
-func (n *Node) GetAuctionService(conn *grpc.ClientConn) Auction.AuctionServiceClient {
-	// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
-	defer conn.Close()
-	//  Create new Client from generated gRPC code from proto
-	c := Auction.NewAuctionServiceClient(conn)
-	return c
 }
 
 func contains(s []string, e string) bool {
