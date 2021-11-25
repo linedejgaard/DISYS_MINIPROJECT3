@@ -23,7 +23,7 @@ type AuctionServiceClient interface {
 	Join(ctx context.Context, in *JoinRequest, opts ...grpc.CallOption) (*JoinReply, error)
 	Leave(ctx context.Context, in *LeaveRequest, opts ...grpc.CallOption) (*LeaveReply, error)
 	UpdatePorts(ctx context.Context, in *UpdatePortsRequest, opts ...grpc.CallOption) (*UpdatePortsReply, error)
-	UpdateActionStatus(ctx context.Context, in *UpdateAuctionStatusRequest, opts ...grpc.CallOption) (*UpdateActionStatusReply, error)
+	UpdateAuctionStatus(ctx context.Context, in *UpdateAuctionStatusRequest, opts ...grpc.CallOption) (*UpdateAuctionStatusReply, error)
 	Bid(ctx context.Context, in *BidRequest, opts ...grpc.CallOption) (*BidReply, error)
 	PublishResult(ctx context.Context, in *PublishResultRequest, opts ...grpc.CallOption) (*PublishResultReply, error)
 	GetState(ctx context.Context, in *GetStateRequest, opts ...grpc.CallOption) (*GetStateReply, error)
@@ -83,9 +83,9 @@ func (c *auctionServiceClient) UpdatePorts(ctx context.Context, in *UpdatePortsR
 	return out, nil
 }
 
-func (c *auctionServiceClient) UpdateActionStatus(ctx context.Context, in *UpdateAuctionStatusRequest, opts ...grpc.CallOption) (*UpdateActionStatusReply, error) {
-	out := new(UpdateActionStatusReply)
-	err := c.cc.Invoke(ctx, "/Auction.AuctionService/UpdateActionStatus", in, out, opts...)
+func (c *auctionServiceClient) UpdateAuctionStatus(ctx context.Context, in *UpdateAuctionStatusRequest, opts ...grpc.CallOption) (*UpdateAuctionStatusReply, error) {
+	out := new(UpdateAuctionStatusReply)
+	err := c.cc.Invoke(ctx, "/Auction.AuctionService/UpdateAuctionStatus", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -137,7 +137,7 @@ type AuctionServiceServer interface {
 	Join(context.Context, *JoinRequest) (*JoinReply, error)
 	Leave(context.Context, *LeaveRequest) (*LeaveReply, error)
 	UpdatePorts(context.Context, *UpdatePortsRequest) (*UpdatePortsReply, error)
-	UpdateActionStatus(context.Context, *UpdateAuctionStatusRequest) (*UpdateActionStatusReply, error)
+	UpdateAuctionStatus(context.Context, *UpdateAuctionStatusRequest) (*UpdateAuctionStatusReply, error)
 	Bid(context.Context, *BidRequest) (*BidReply, error)
 	PublishResult(context.Context, *PublishResultRequest) (*PublishResultReply, error)
 	GetState(context.Context, *GetStateRequest) (*GetStateReply, error)
@@ -164,8 +164,8 @@ func (UnimplementedAuctionServiceServer) Leave(context.Context, *LeaveRequest) (
 func (UnimplementedAuctionServiceServer) UpdatePorts(context.Context, *UpdatePortsRequest) (*UpdatePortsReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdatePorts not implemented")
 }
-func (UnimplementedAuctionServiceServer) UpdateActionStatus(context.Context, *UpdateAuctionStatusRequest) (*UpdateActionStatusReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method UpdateActionStatus not implemented")
+func (UnimplementedAuctionServiceServer) UpdateAuctionStatus(context.Context, *UpdateAuctionStatusRequest) (*UpdateAuctionStatusReply, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateAuctionStatus not implemented")
 }
 func (UnimplementedAuctionServiceServer) Bid(context.Context, *BidRequest) (*BidReply, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Bid not implemented")
@@ -282,20 +282,20 @@ func _AuctionService_UpdatePorts_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _AuctionService_UpdateActionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _AuctionService_UpdateAuctionStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateAuctionStatusRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(AuctionServiceServer).UpdateActionStatus(ctx, in)
+		return srv.(AuctionServiceServer).UpdateAuctionStatus(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/Auction.AuctionService/UpdateActionStatus",
+		FullMethod: "/Auction.AuctionService/UpdateAuctionStatus",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(AuctionServiceServer).UpdateActionStatus(ctx, req.(*UpdateAuctionStatusRequest))
+		return srv.(AuctionServiceServer).UpdateAuctionStatus(ctx, req.(*UpdateAuctionStatusRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -400,8 +400,8 @@ var AuctionService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _AuctionService_UpdatePorts_Handler,
 		},
 		{
-			MethodName: "UpdateActionStatus",
-			Handler:    _AuctionService_UpdateActionStatus_Handler,
+			MethodName: "UpdateAuctionStatus",
+			Handler:    _AuctionService_UpdateAuctionStatus_Handler,
 		},
 		{
 			MethodName: "Bid",

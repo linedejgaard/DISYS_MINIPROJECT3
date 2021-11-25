@@ -30,6 +30,16 @@ var port string       //node
 
 func main() {
 
+	file, err := os.OpenFile("../info.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	defer file.Close()
+
+	log.SetOutput(file)
+
+	defer recoverError()
 	// write your port
 	reader := bufio.NewReader(os.Stdin)
 	fmt.Println("Please write your port")
@@ -46,13 +56,13 @@ func main() {
 
 	n.sendJoinRequest()
 	for {
-		QueryUserForInputViaTerminal(input, reader, n)
+		QueryUserForInputViaTerminal(reader, n)
 	}
 
 }
 
-func QueryUserForInputViaTerminal(input string, reader *bufio.Reader, n Node) {
-	input = GetInputFromTerminal(reader)
+func QueryUserForInputViaTerminal(reader *bufio.Reader, n Node) {
+	input := GetInputFromTerminal(reader)
 
 	if strings.Compare("/b", input) == 0 {
 		if isAuction {
@@ -107,7 +117,7 @@ func (n *Node) sendJoinRequest() {
 	portString := ":" + leaderPort
 	conn, err := grpc.Dial(portString, grpc.WithInsecure())
 	if err != nil {
-		log.Fatalf("Could not connect: %s", err)
+		log.Printf("Could not connect: %s\n", err)
 		fmt.Println("Please type new leader:")
 		reader := bufio.NewReader(os.Stdin)
 		input := GetInputFromTerminal(reader)
@@ -128,12 +138,18 @@ func (n *Node) sendJoinRequest() {
 
 		response, err := c.Join(context.Background(), &message)
 		if err != nil {
-			log.Fatalf("Error when calling join: %s", err)
+			log.Printf("Error when calling join: %s\n", err)
+			fmt.Println("Please type new leader:")
+			reader := bufio.NewReader(os.Stdin)
+			input := GetInputFromTerminal(reader)
+			leaderPort = input
+			n.sendJoinRequest()
+		} else {
+			ports = strings.Split(response.Ports, " ")
+
+			log.Printf("Join response: %s\n", response.Reply)
 		}
 
-		ports = strings.Split(response.Ports, " ")
-
-		log.Printf("Join response: %s\n", response.Reply)
 	}
 }
 
@@ -167,7 +183,7 @@ func (n *Node) sendUpdatePortsRequest(portsString string) { //called on leader
 		if err != nil {
 			ports = removeByPort(stringToSlice(portsString), p)
 			n.sendUpdatePortsRequest(sliceToString(ports))
-			log.Fatalf("Could not connect: %s", err)
+			log.Printf("Could not connect: %s", err)
 		} else {
 
 			// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
@@ -184,7 +200,7 @@ func (n *Node) sendUpdatePortsRequest(portsString string) { //called on leader
 			if err != nil {
 				ports = removeByPort(stringToSlice(portsString), p)
 				n.sendUpdatePortsRequest(sliceToString(ports))
-				log.Fatalf("Error when calling send update ports request: %s", err)
+				log.Printf("Error when calling send update ports request: %s\n", err)
 
 			} else {
 				log.Printf("update ports request response: %s\n", response.Reply)
@@ -229,10 +245,9 @@ func (n *Node) sendGetStateRequest() { //to leader
 	portString := ":" + leaderPort
 	conn, err := grpc.Dial(portString, grpc.WithInsecure())
 	if err != nil {
-
 		n.startElection()
 		n.sendGetStateRequest()
-		log.Fatalf("Could not connect: %s", err)
+		log.Printf("Could not connect: %s\n", err)
 	} else {
 
 		// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
@@ -246,18 +261,19 @@ func (n *Node) sendGetStateRequest() { //to leader
 
 		response, err := c.GetState(context.Background(), &message)
 		if err != nil {
-			//n.startElection()
-			//n.sendGetStateRequest()
-			log.Fatalf("Error when calling Get state: %s", err)
-		}
-
-		if response.State == 0 {
-			fmt.Println("There is no current auction")
+			n.startElection()
+			n.sendGetStateRequest()
+			log.Printf("Error when calling Get state: %s\n", err)
 		} else {
-			fmt.Printf("Current highest bid is: %v\n", response.State)
+			if response.State == 0 {
+				fmt.Println("There is no current auction")
+			} else {
+				fmt.Printf("Current highest bid is: %v\n", response.State)
+			}
+
+			log.Printf("Get State response: %s\n", response.Reply)
 		}
 
-		log.Printf("Get State response: %s\n", response.Reply)
 	}
 }
 
@@ -279,7 +295,7 @@ func (n *Node) sendBidRequest(input string) { //to leader
 	if err != nil {
 		n.startElection()
 		n.sendBidRequest(input)
-		log.Fatalf("Could not connect: %s", err)
+		log.Printf("Could not connect: %s\n", err)
 	} else {
 
 		// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
@@ -304,12 +320,13 @@ func (n *Node) sendBidRequest(input string) { //to leader
 		response, err := c.Bid(context.Background(), &message)
 
 		if err != nil {
-			//n.startElection()
-			//n.sendBidRequest(input)
-			log.Fatalf("Error when calling bid: %s", err)
+			n.startElection()
+			n.sendBidRequest(input)
+			log.Printf("Error when calling bid: %s\n", err)
+		} else {
+			log.Printf("Bid response: %s\n", response.Reply)
 		}
 
-		log.Printf("Bid response: %s\n", response.Reply)
 	}
 }
 
@@ -343,7 +360,7 @@ func (n *Node) sendLeaveRequest() { //to leader
 	if err != nil {
 		n.startElection()
 		n.sendLeaveRequest()
-		log.Fatalf("Could not connect: %s", err)
+		log.Printf("Could not connect: %s\n", err)
 	}
 
 	// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
@@ -358,12 +375,14 @@ func (n *Node) sendLeaveRequest() { //to leader
 
 	response, err := c.Leave(context.Background(), &message)
 	if err != nil {
-		//n.startElection()
-		//n.sendLeaveRequest()
-		log.Fatalf("Error when calling leave: %s", err)
+		n.startElection()
+		n.sendLeaveRequest()
+		log.Printf("Error when calling leave: %s\n", err)
+	} else {
+		log.Printf("Leave response: %s\n", response.Reply)
+		os.Exit(0)
 	}
 
-	log.Printf("Leave response: %s\n", response.Reply)
 }
 
 func (n *Node) Leave(_ context.Context, in *Auction.LeaveRequest) (*Auction.LeaveReply, error) {
@@ -387,37 +406,43 @@ func (n *Node) Leave(_ context.Context, in *Auction.LeaveRequest) (*Auction.Leav
 
 func (n *Node) sendPublishResultRequest() { //from leader
 	fmt.Println("SEND PUBLISH RESULT REQUEST")
+	canConnect := true
 	for _, p := range ports {
+		if canConnect {
+			// Creat a virtual RPC Client Connection on port  9080 WithInsecure (because  of http)
+			var conn *grpc.ClientConn
+			portString := ":" + p
+			conn, err := grpc.Dial(portString, grpc.WithInsecure())
+			if err != nil {
+				ports = removeByPort(ports, p)
+				n.sendUpdatePortsRequest(sliceToString(ports))
+				log.Printf("Could not connect: %s\n", err)
+			}
 
-		// Creat a virtual RPC Client Connection on port  9080 WithInsecure (because  of http)
-		var conn *grpc.ClientConn
-		portString := ":" + p
-		conn, err := grpc.Dial(portString, grpc.WithInsecure())
-		if err != nil {
-			ports = removeByPort(ports, p)
-			n.sendUpdatePortsRequest(sliceToString(ports))
-			log.Fatalf("Could not connect: %s", err)
+			// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
+			defer conn.Close()
+			//  Create new Client from generated gRPC code from proto
+			c := Auction.NewAuctionServiceClient(conn)
+
+			// Send leader request
+			message := Auction.PublishResultRequest{
+				Highestbid: highestBid,
+				Bidder:     highestBidder,
+			}
+
+			response, err := c.PublishResult(context.Background(), &message)
+			if err != nil {
+				canConnect = false
+				ports = removeByPort(ports, p)
+				n.sendUpdatePortsRequest(sliceToString(ports))
+				n.sendPublishResultRequest()
+				log.Printf("Error when calling publish result ports request: %s\n", err)
+			} else {
+				log.Printf("publish result request response: %s\n", response.Reply)
+			}
+
 		}
 
-		// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
-		defer conn.Close()
-		//  Create new Client from generated gRPC code from proto
-		c := Auction.NewAuctionServiceClient(conn)
-
-		// Send leader request
-		message := Auction.PublishResultRequest{
-			Highestbid: highestBid,
-			Bidder:     highestBidder,
-		}
-
-		response, err := c.PublishResult(context.Background(), &message)
-		if err != nil {
-			ports = removeByPort(ports, p)
-			n.sendUpdatePortsRequest(sliceToString(ports))
-			log.Fatalf("Error when calling publish result ports request: %s", err)
-		}
-
-		log.Printf("publish result request response: %s\n", response.Reply)
 	}
 }
 
@@ -443,18 +468,18 @@ func (n *Node) sendMakeNewAuctionRequest(input string) { //to leader
 	if err != nil {
 		n.startElection()
 		n.sendMakeNewAuctionRequest(input)
-		log.Fatalf("Could not connect: %s", err)
+		log.Printf("Could not connect: %s\n", err)
 	}
 
 	amount := n.GetBiddingAmountFromUser(input)
 
-	response := n.SendMakeNewAuctionRequestReceiveReply(conn, amount)
+	response := n.SendMakeNewAuctionRequestReceiveReply(conn, amount, input)
 
 	log.Printf("Make New Auction response: %s\n", response.Reply)
 
 }
 
-func (n *Node) SendMakeNewAuctionRequestReceiveReply(conn *grpc.ClientConn, amount int) *Auction.MakeNewAuctionReply {
+func (n *Node) SendMakeNewAuctionRequestReceiveReply(conn *grpc.ClientConn, amount int, input string) *Auction.MakeNewAuctionReply {
 	// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
 	defer conn.Close()
 	//  Create new Client from generated gRPC code from proto
@@ -468,12 +493,17 @@ func (n *Node) SendMakeNewAuctionRequestReceiveReply(conn *grpc.ClientConn, amou
 
 	response, err := c.MakeNewAuction(context.Background(), &message)
 	if err != nil {
-		//n.startElection()
-		//n.sendMakeNewAuctionRequest(input)
-		log.Fatalf("Error when calling Make New Auction: %s", err)
+		log.Printf("Error when calling Make New Auction: %s\n", err)
+		n.startElection()
+		n.sendMakeNewAuctionRequest(input)
 
+	} else {
+		return response
 	}
-	return response
+	return &Auction.MakeNewAuctionReply{
+		Reply: "NOT SUCCEEDED",
+	}
+
 }
 
 func (n *Node) GetBiddingAmountFromUser(input string) int {
@@ -528,7 +558,7 @@ func (n *Node) startElection() {
 			if err != nil {
 				ports = removeByPort(ports, p)
 				n.sendUpdatePortsRequest(sliceToString(ports))
-				log.Fatalf("Could not connect: %s", err)
+				log.Printf("Could not connect: %s\n", err)
 			}
 
 			// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
@@ -554,7 +584,7 @@ func sendElectionRequest(c Auction.AuctionServiceClient) bool {
 	}
 	response, err := c.Election(context.Background(), &message)
 	if err != nil {
-		log.Fatalf("Error when calling Elction: %s", err)
+		log.Printf("Error when calling Elction: %s\n", err)
 		return false
 	}
 	if response == nil {
@@ -583,7 +613,7 @@ func (n *Node) sendLeaderRequest() {
 		portString := ":" + p
 		conn, err := grpc.Dial(portString, grpc.WithInsecure())
 		if err != nil {
-			log.Fatalf("Could not connect: %s", err)
+			log.Printf("Could not connect: %s\n", err)
 		}
 
 		n.SendLeaderRequestReceiveReply(conn)
@@ -608,7 +638,7 @@ func (n *Node) SendLeaderRequestReceiveReply(conn *grpc.ClientConn) {
 
 	response, err := c.LeaderDeclaration(context.Background(), &message)
 	if err != nil {
-		log.Fatalf("Error when calling LeaderDeclaration: %s", err)
+		log.Printf("Error when calling LeaderDeclaration: %s\n", err)
 	}
 	log.Printf("Leader Declaration response: %v", response.Reply)
 }
@@ -626,7 +656,7 @@ func (n *Node) LeaderDeclaration(_ context.Context, in *Auction.LeaderDeclaratio
 
 func (n *Node) sendUpdateAuctionStatusRequest() {
 	canConnect := true
-	fmt.Printf("------------> SEND UPDATE AUCTION STATUS REQUEST, PORT: %v, PORTS: %v\n", port, ports)
+	fmt.Printf("SEND UPDATE AUCTION STATUS REQUEST, PORT: %v, PORTS: %v\n", port, ports)
 	for _, p := range ports {
 		if canConnect {
 
@@ -639,17 +669,25 @@ func (n *Node) sendUpdateAuctionStatusRequest() {
 				ports = removeByPort(ports, p)
 				n.sendUpdatePortsRequest(sliceToString(ports))
 				log.Printf("Could not connect: %s\n", err)
+			} else {
+				response := n.SendUpdateAuctionStatusRequestReceiveReply(conn, p)
+
+				log.Printf("update auction request response: %s\n", response.Reply)
 			}
 
-			response := n.SendUpdateAuctionStatusRequestReceiveReply(conn, p)
-
-			log.Printf("update auction request response: %s\n", response.Reply)
 		}
 
 	}
 }
 
-func (n *Node) SendUpdateAuctionStatusRequestReceiveReply(conn *grpc.ClientConn, p string) *Auction.UpdateActionStatusReply {
+func recoverError() {
+	if err := recover(); err != nil {
+		log.Println(err)
+	}
+}
+
+func (n *Node) SendUpdateAuctionStatusRequestReceiveReply(conn *grpc.ClientConn, p string) *Auction.UpdateAuctionStatusReply {
+
 	// Defer means: When this function returns, call this method (meaing, one main is done, close connection)
 	defer conn.Close()
 	//  Create new Client from generated gRPC code from proto
@@ -662,24 +700,28 @@ func (n *Node) SendUpdateAuctionStatusRequestReceiveReply(conn *grpc.ClientConn,
 		IsAuction: isAuction,
 	}
 
-	response, err := c.UpdateActionStatus(context.Background(), &message) //THIS IS THE ERROR --> RESPONSE MÅ VÆRE EN FEJL
+	response, err := c.UpdateAuctionStatus(context.Background(), &message) //THIS IS THE ERROR --> RESPONSE MÅ VÆRE EN FEJL
 	if err != nil {
 		ports = removeByPort(ports, p)
 		n.sendUpdatePortsRequest(sliceToString(ports))
-		log.Printf("Error when calling update auction ports request: %s\n", err)
+		n.sendUpdateAuctionStatusRequest()
+		log.Printf("Error when calling update auction status request: %s\n", err)
+	} else {
+		return response
 	}
-	return response
+
+	return &Auction.UpdateAuctionStatusReply{
+		Reply: "NOT OK",
+	}
 }
 
-func (n *Node) UpdateActionStatus(_ context.Context, in *Auction.UpdateAuctionStatusRequest) (*Auction.UpdateActionStatusReply, error) {
+func (n *Node) UpdateAuctionStatus(_ context.Context, in *Auction.UpdateAuctionStatusRequest) (*Auction.UpdateAuctionStatusReply, error) {
 	fmt.Println("UPDATE AUCTION STATUS")
-	fmt.Println("HER 1 <----")
 	highestBid = in.Bid
 	highestBidder = in.Bidder
 	isAuction = in.IsAuction
-	fmt.Println("HER 2 <----")
 
-	return &Auction.UpdateActionStatusReply{
+	return &Auction.UpdateAuctionStatusReply{
 		Reply: "OK",
 	}, nil
 }
@@ -694,7 +736,6 @@ func contains(s []string, e string) bool {
 }
 
 func removeByPort(ports []string, port string) []string {
-	fmt.Printf("ports before: %v\n", ports)
 
 	newPorts := make([]string, 0)
 
@@ -703,7 +744,6 @@ func removeByPort(ports []string, port string) []string {
 			newPorts = append(newPorts, p)
 		}
 	}
-	fmt.Printf("ports after: %v\n", newPorts)
 	return newPorts
 }
 

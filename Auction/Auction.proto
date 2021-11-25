@@ -10,7 +10,7 @@ service AuctionService{
   rpc Join(JoinRequest) returns (JoinReply) {}
   rpc Leave(LeaveRequest) returns (LeaveReply) {}
   rpc UpdatePorts(UpdatePortsRequest) returns (UpdatePortsReply) {}
-  rpc UpdateActionStatus(UpdateAuctionStatusRequest) returns (UpdateActionStatusReply) {}
+  rpc UpdateAuctionStatus(UpdateAuctionStatusRequest) returns (UpdateAuctionStatusReply) {}
 
   rpc Bid(BidRequest) returns (BidReply) {}
   rpc PublishResult(PublishResultRequest) returns (PublishResultReply) {}
@@ -24,7 +24,7 @@ message UpdateAuctionStatusRequest {
     bool isAuction = 3;
 }
 
-message UpdateActionStatusReply {
+message UpdateAuctionStatusReply {
     string reply = 1;
 }
 
