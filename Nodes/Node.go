@@ -647,6 +647,8 @@ func (n *Node) SendLeaderRequestReceiveReply(conn *grpc.ClientConn) {
 		Port: port,
 	}
 
+	leaderPort = port
+
 	response, err := c.LeaderDeclaration(context.Background(), &message)
 	if err != nil {
 		log.Printf("Error when calling LeaderDeclaration: %s\n", err)
@@ -658,7 +660,7 @@ func (n *Node) LeaderDeclaration(_ context.Context, in *Auction.LeaderDeclaratio
 	//fmt.Println("LEADER DECLARATION")
 	leaderPort = in.Port
 
-	fmt.Printf("New leader: %v\n", in.Port)
+	fmt.Printf("New leader: %v\n", leaderPort)
 
 	return &Auction.LeaderDeclarationReply{
 		Reply: "OK",
