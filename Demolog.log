@@ -1,158 +1,125 @@
-2021/11/25 09:50:29 update ports request response: OK
-2021/11/25 09:50:29 Join response: Join succeeded
-2021/11/25 09:50:53 update ports request response: OK
-2021/11/25 09:50:53 update ports request response: OK
-2021/11/25 09:50:53 Join response: Join succeeded
-2021/11/25 09:51:07 update ports request response: OK
-2021/11/25 09:51:07 update ports request response: OK
-2021/11/25 09:51:07 update ports request response: OK
-2021/11/25 09:51:07 Join response: Join succeeded
-2021/11/25 09:51:13 update ports request response: OK
-2021/11/25 09:51:13 update ports request response: OK
-2021/11/25 09:51:13 update ports request response: OK
-2021/11/25 09:51:13 update ports request response: OK
-2021/11/25 09:51:13 Join response: Join succeeded
-2021/11/25 09:51:23 update auction request response: OK
-2021/11/25 09:51:23 update auction request response: OK
-2021/11/25 09:51:23 update auction request response: OK
-2021/11/25 09:51:23 update auction request response: OK
-2021/11/25 09:51:23 Make New Auction response: Succeeded
-2021/11/25 09:51:25 Get State response: Get State succeded
-2021/11/25 09:51:27 update auction request response: OK
-2021/11/25 09:51:27 update auction request response: OK
-2021/11/25 09:51:27 update auction request response: OK
-2021/11/25 09:51:27 update auction request response: OK
-2021/11/25 09:51:27 Bid response: Your bid is now the highest
-2021/11/25 09:51:30 Get State response: Get State succeded
-2021/11/25 09:51:31 update auction request response: OK
-2021/11/25 09:51:31 update auction request response: OK
-2021/11/25 09:51:31 update auction request response: OK
-2021/11/25 09:51:31 update auction request response: OK
-2021/11/25 09:51:31 Bid response: Another bid was higher than yours
-2021/11/25 09:51:37 Get State response: Get State succeded
-2021/11/25 09:51:38 update auction request response: OK
-2021/11/25 09:51:38 update auction request response: OK
-2021/11/25 09:51:38 update auction request response: OK
-2021/11/25 09:51:38 update auction request response: OK
-2021/11/25 09:51:38 publish result request response: OK
-2021/11/25 09:51:38 publish result request response: OK
-2021/11/25 09:51:38 publish result request response: OK
-2021/11/25 09:51:38 publish result request response: OK
-2021/11/25 09:52:00 update auction request response: OK
-2021/11/25 09:52:00 update auction request response: OK
-2021/11/25 09:52:00 update ports request response: OK
-2021/11/25 09:52:00 update ports request response: OK
-2021/11/25 09:52:00 update ports request response: OK
-2021/11/25 09:52:00 update auction request response: OK
-2021/11/25 09:52:00 update auction request response: OK
-2021/11/25 09:52:00 update auction request response: OK
-2021/11/25 09:52:00 Error when calling update auction status request: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp :3333: connect: connection refused"
-2021/11/25 09:52:00 update auction request response: NOT OK
-2021/11/25 09:52:00 update auction request response: OK
-2021/11/25 09:52:00 Make New Auction response: Succeeded
-2021/11/25 09:52:04 Get State response: Get State succeded
-2021/11/25 09:52:05 update auction request response: OK
-2021/11/25 09:52:05 update auction request response: OK
-2021/11/25 09:52:05 update auction request response: OK
-2021/11/25 09:52:05 Bid response: Your bid is now the highest
-2021/11/25 09:52:09 update auction request response: OK
-2021/11/25 09:52:09 update auction request response: OK
-2021/11/25 09:52:09 update auction request response: OK
-2021/11/25 09:52:09 Bid response: Your bid is now the highest
-2021/11/25 09:52:09 update auction request response: OK
-2021/11/25 09:52:09 update auction request response: OK
-2021/11/25 09:52:09 update auction request response: OK
-2021/11/25 09:52:09 Bid response: Another bid was higher than yours
-2021/11/25 09:52:15 update auction request response: OK
-2021/11/25 09:52:15 update auction request response: OK
-2021/11/25 09:52:15 update auction request response: OK
-2021/11/25 09:52:15 publish result request response: OK
-2021/11/25 09:52:15 publish result request response: OK
-2021/11/25 09:52:15 publish result request response: OK
-2021/11/25 09:52:24 update ports request response: OK
-2021/11/25 09:52:24 update ports request response: OK
-2021/11/25 09:52:24 update ports request response: OK
-2021/11/25 09:52:24 update ports request response: OK
-2021/11/25 09:52:24 Join response: Join succeeded
-2021/11/25 09:52:33 update auction request response: OK
-2021/11/25 09:52:33 update auction request response: OK
-2021/11/25 09:52:33 update auction request response: OK
-2021/11/25 09:52:33 update auction request response: OK
-2021/11/25 09:52:33 Make New Auction response: Succeeded
-2021/11/25 09:52:41 update ports request response: OK
-2021/11/25 09:52:41 update ports request response: OK
-2021/11/25 09:52:41 update ports request response: OK
-2021/11/25 09:52:41 Leader Declaration response: OK
-2021/11/25 09:52:41 Leader Declaration response: OK
-2021/11/25 09:52:41 Leader Declaration response: OK
-2021/11/25 09:52:41 Get State response: Get State succeded
-2021/11/25 09:52:41 Error when calling Get state: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp :1111: connect: connection refused"
-2021/11/25 09:52:45 update auction request response: OK
-2021/11/25 09:52:45 update auction request response: OK
-2021/11/25 09:52:45 update auction request response: OK
-2021/11/25 09:52:45 Bid response: Your bid is now the highest
-2021/11/25 09:52:53 update auction request response: OK
-2021/11/25 09:52:53 update auction request response: OK
-2021/11/25 09:52:53 update auction request response: OK
-2021/11/25 09:52:53 Make New Auction response: There is already an auction, please wait until it is finished
-2021/11/25 09:52:56 update auction request response: OK
-2021/11/25 09:52:56 update auction request response: OK
-2021/11/25 09:52:56 update auction request response: OK
-2021/11/25 09:52:56 publish result request response: OK
-2021/11/25 09:52:56 publish result request response: OK
-2021/11/25 09:52:56 publish result request response: OK
-2021/11/25 09:53:04 update auction request response: OK
-2021/11/25 09:53:04 update auction request response: OK
-2021/11/25 09:53:04 update auction request response: OK
-2021/11/25 09:53:04 Make New Auction response: Succeeded
-2021/11/25 09:53:07 Get State response: Get State succeded
-2021/11/25 09:53:08 update auction request response: OK
-2021/11/25 09:53:08 update auction request response: OK
-2021/11/25 09:53:08 update auction request response: OK
-2021/11/25 09:53:08 Bid response: Your bid is now the highest
-2021/11/25 09:53:19 update auction request response: OK
-2021/11/25 09:53:19 update auction request response: OK
-2021/11/25 09:53:19 update auction request response: OK
-2021/11/25 09:53:19 publish result request response: OK
-2021/11/25 09:53:19 publish result request response: OK
-2021/11/25 09:53:19 publish result request response: OK
-2021/11/25 09:53:26 Error when calling join: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp :1111: connect: connection refused"
-2021/11/25 09:53:31 update ports request response: OK
-2021/11/25 09:53:31 update ports request response: OK
-2021/11/25 09:53:31 update ports request response: OK
-2021/11/25 09:53:31 update ports request response: OK
-2021/11/25 09:53:31 Join response: Join succeeded
-2021/11/25 09:53:44 update auction request response: OK
-2021/11/25 09:53:44 update auction request response: OK
-2021/11/25 09:53:44 update auction request response: OK
-2021/11/25 09:53:44 update auction request response: OK
-2021/11/25 09:53:44 Make New Auction response: Succeeded
-2021/11/25 09:53:46 Get State response: Get State succeded
-2021/11/25 09:53:47 update auction request response: OK
-2021/11/25 09:53:47 update auction request response: OK
-2021/11/25 09:53:47 update auction request response: OK
-2021/11/25 09:53:47 update auction request response: OK
-2021/11/25 09:53:47 Bid response: Another bid was higher than yours
-2021/11/25 09:53:51 Get State response: Get State succeded
-2021/11/25 09:53:53 update auction request response: OK
-2021/11/25 09:53:53 update auction request response: OK
-2021/11/25 09:53:53 update auction request response: OK
-2021/11/25 09:53:53 update auction request response: OK
-2021/11/25 09:53:53 Bid response: Your bid is now the highest
-2021/11/25 09:53:59 update auction request response: OK
-2021/11/25 09:53:59 update auction request response: OK
-2021/11/25 09:53:59 update auction request response: OK
-2021/11/25 09:53:59 update auction request response: OK
-2021/11/25 09:53:59 publish result request response: OK
-2021/11/25 09:53:59 publish result request response: OK
-2021/11/25 09:53:59 publish result request response: OK
-2021/11/25 09:53:59 publish result request response: OK
-2021/11/25 09:54:11 update ports request response: OK
-2021/11/25 09:54:11 update ports request response: OK
-2021/11/25 09:54:11 update ports request response: OK
-2021/11/25 09:54:11 Leave response: 5555 left the auction house
-2021/11/25 09:54:13 update ports request response: OK
-2021/11/25 09:54:13 update ports request response: OK
-2021/11/25 09:54:13 Leave response: 5555 left the auction house
-2021/11/25 09:54:16 update ports request response: OK
-2021/11/25 09:54:16 Leave response: 5555 left the auction house
+2021/11/26 08:40:54 update ports request response: OK
+2021/11/26 08:40:54 Join response: Join succeeded
+2021/11/26 08:40:57 update ports request response: OK
+2021/11/26 08:40:57 update ports request response: OK
+2021/11/26 08:40:57 Join response: Join succeeded
+2021/11/26 08:40:59 update ports request response: OK
+2021/11/26 08:40:59 update ports request response: OK
+2021/11/26 08:40:59 update ports request response: OK
+2021/11/26 08:40:59 Join response: Join succeeded
+2021/11/26 08:41:02 update ports request response: OK
+2021/11/26 08:41:02 update ports request response: OK
+2021/11/26 08:41:02 update ports request response: OK
+2021/11/26 08:41:02 update ports request response: OK
+2021/11/26 08:41:02 Join response: Join succeeded
+2021/11/26 08:41:06 update auction request response: OK
+2021/11/26 08:41:06 update auction request response: OK
+2021/11/26 08:41:06 update auction request response: OK
+2021/11/26 08:41:06 update auction request response: OK
+2021/11/26 08:41:06 Make New Auction response: Succeeded
+2021/11/26 08:41:09 Get State response: Get State succeded
+2021/11/26 08:41:10 update auction request response: OK
+2021/11/26 08:41:10 update auction request response: OK
+2021/11/26 08:41:10 update auction request response: OK
+2021/11/26 08:41:10 update auction request response: OK
+2021/11/26 08:41:10 Bid response: Your bid is now the highest
+2021/11/26 08:41:14 Get State response: Get State succeded
+2021/11/26 08:41:18 Get State response: Get State succeded
+2021/11/26 08:41:19 update auction request response: OK
+2021/11/26 08:41:19 update auction request response: OK
+2021/11/26 08:41:19 update auction request response: OK
+2021/11/26 08:41:19 update auction request response: OK
+2021/11/26 08:41:19 Bid response: Another bid was higher than yours
+2021/11/26 08:41:21 update auction request response: OK
+2021/11/26 08:41:21 update auction request response: OK
+2021/11/26 08:41:21 update auction request response: OK
+2021/11/26 08:41:21 update auction request response: OK
+2021/11/26 08:41:21 publish result request response: OK
+2021/11/26 08:41:21 publish result request response: OK
+2021/11/26 08:41:21 publish result request response: OK
+2021/11/26 08:41:21 publish result request response: OK
+2021/11/26 08:41:32 Error when calling Make New Auction: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp :1111: connect: connection refused"
+2021/11/26 08:41:32 update ports request response: OK
+2021/11/26 08:41:32 update ports request response: OK
+2021/11/26 08:41:32 update ports request response: OK
+2021/11/26 08:41:32 update ports request response: OK
+2021/11/26 08:41:32 update ports request response: OK
+2021/11/26 08:41:32 update ports request response: OK
+2021/11/26 08:41:32 Leader Declaration response: OK
+2021/11/26 08:41:32 Leader Declaration response: OK
+2021/11/26 08:41:32 Leader Declaration response: OK
+2021/11/26 08:41:32 Election reply:  OK
+2021/11/26 08:41:32 update auction request response: OK
+2021/11/26 08:41:32 update auction request response: OK
+2021/11/26 08:41:32 update auction request response: OK
+2021/11/26 08:41:32 Make New Auction response: Succeeded
+2021/11/26 08:41:32 Make New Auction response: NOT SUCCEEDED
+2021/11/26 08:41:35 Get State response: Get State succeded
+2021/11/26 08:41:37 update auction request response: OK
+2021/11/26 08:41:37 update auction request response: OK
+2021/11/26 08:41:37 update auction request response: OK
+2021/11/26 08:41:37 Bid response: Another bid was higher than yours
+2021/11/26 08:41:41 Get State response: Get State succeded
+2021/11/26 08:41:42 update auction request response: OK
+2021/11/26 08:41:42 update auction request response: OK
+2021/11/26 08:41:42 update auction request response: OK
+2021/11/26 08:41:42 Bid response: Your bid is now the highest
+2021/11/26 08:41:47 update auction request response: OK
+2021/11/26 08:41:47 update auction request response: OK
+2021/11/26 08:41:47 update auction request response: OK
+2021/11/26 08:41:47 publish result request response: OK
+2021/11/26 08:41:47 publish result request response: OK
+2021/11/26 08:41:47 publish result request response: OK
+2021/11/26 08:42:03 Error when calling join: rpc error: code = Unavailable desc = connection error: desc = "transport: Error while dialing dial tcp :1111: connect: connection refused"
+2021/11/26 08:42:06 update ports request response: OK
+2021/11/26 08:42:06 update ports request response: OK
+2021/11/26 08:42:06 update ports request response: OK
+2021/11/26 08:42:06 update ports request response: OK
+2021/11/26 08:42:06 Join response: Join succeeded
+2021/11/26 08:42:10 publish result request response: OK
+2021/11/26 08:42:10 publish result request response: OK
+2021/11/26 08:42:10 publish result request response: OK
+2021/11/26 08:42:10 publish result request response: OK
+2021/11/26 08:42:22 update auction request response: OK
+2021/11/26 08:42:22 update auction request response: OK
+2021/11/26 08:42:22 update auction request response: OK
+2021/11/26 08:42:22 update auction request response: OK
+2021/11/26 08:42:22 Make New Auction response: Succeeded
+2021/11/26 08:42:24 Get State response: Get State succeded
+2021/11/26 08:42:25 update auction request response: OK
+2021/11/26 08:42:25 update auction request response: OK
+2021/11/26 08:42:25 update auction request response: OK
+2021/11/26 08:42:25 update auction request response: OK
+2021/11/26 08:42:25 Bid response: Your bid is now the highest
+2021/11/26 08:42:37 update auction request response: OK
+2021/11/26 08:42:37 update auction request response: OK
+2021/11/26 08:42:37 update auction request response: OK
+2021/11/26 08:42:37 update auction request response: OK
+2021/11/26 08:42:37 publish result request response: OK
+2021/11/26 08:42:37 publish result request response: OK
+2021/11/26 08:42:37 publish result request response: OK
+2021/11/26 08:42:37 publish result request response: OK
+2021/11/26 08:42:40 update ports request response: OK
+2021/11/26 08:42:40 update ports request response: OK
+2021/11/26 08:42:40 update ports request response: OK
+2021/11/26 08:42:40 Leave response: 4444 left the auction house
+2021/11/26 08:42:45 update auction request response: OK
+2021/11/26 08:42:45 update auction request response: OK
+2021/11/26 08:42:45 update auction request response: OK
+2021/11/26 08:42:45 Make New Auction response: Succeeded
+2021/11/26 08:42:52 Get State response: Get State succeded
+2021/11/26 08:42:58 update auction request response: OK
+2021/11/26 08:42:58 update auction request response: OK
+2021/11/26 08:42:58 update auction request response: OK
+2021/11/26 08:42:58 Bid response: Your bid is now the highest
+2021/11/26 08:43:00 update auction request response: OK
+2021/11/26 08:43:00 update auction request response: OK
+2021/11/26 08:43:00 update auction request response: OK
+2021/11/26 08:43:00 publish result request response: OK
+2021/11/26 08:43:00 publish result request response: OK
+2021/11/26 08:43:00 publish result request response: OK
+2021/11/26 08:43:13 update ports request response: OK
+2021/11/26 08:43:13 update ports request response: OK
+2021/11/26 08:43:13 Leave response: 4444 left the auction house
+2021/11/26 08:43:20 update ports request response: OK
+2021/11/26 08:43:20 Leave response: 4444 left the auction house

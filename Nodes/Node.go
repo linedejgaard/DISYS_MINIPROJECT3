@@ -153,7 +153,7 @@ func (n *Node) sendJoinRequest() {
 			n.sendJoinRequest()
 		} else {
 			ports = strings.Split(response.Ports, " ")
-			isAuction = response.IsAction
+			isAuction = response.IsAuction
 			highestBidder = response.HighestBidder
 			highestBid = response.HighestBid
 
@@ -177,7 +177,7 @@ func (n *Node) Join(_ context.Context, in *Auction.JoinRequest) (*Auction.JoinRe
 
 	return &Auction.JoinReply{
 		Ports:         portsString,
-		IsAction:      isAuction,
+		IsAuction:     isAuction,
 		HighestBidder: highestBidder,
 		HighestBid:    highestBid,
 		Reply:         "Join succeeded",
