@@ -56,6 +56,9 @@ message LeaderDeclarationRequest {
 message JoinReply {
     string ports = 1;
     string reply = 2;
+    string highestBidder = 3;
+    int32 highestBid = 4;
+    bool isAuction = 5;
 }
 
 message JoinRequest {
